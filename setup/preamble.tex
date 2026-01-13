@@ -157,7 +157,25 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
- 
+ \newcommand{\sectiontitlepage}[3]{%
+  \cleardoublepage
+  \thispagestyle{empty}
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{setup/Pictures/A01.C01.01_Front_Billede.png}
+
+    \vspace{0.5cm}
+    \LARGE \textit{#1}
+
+    \vspace{4.5cm}
+    \Huge \textbf{#2}\par
+    \addcontentsline{toc}{part}{#3}
+
+    \vspace{4.5cm}
+    \large \textit{Opdateret: \today}
+  \end{center}
+  \cleardoublepage
+}
+
 \lstdefinestyle{JavaStyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -248,6 +266,59 @@ morestring=[b]"
 
 \titlespacing*{\chapter}{0pt}{0pt}{40pt}
 \usepackage{ulem}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{calc} % <-- important (allows 0.06\paperwidth arithmetic)
+
+\newlength{\illucardW}
+\newlength{\illucardH}
+\newlength{\illumarW}
+\newlength{\illumarH}
+
+% Background fills page; foreground sits on a clean "card" and is fitted (no crop, no distortion)
+% #1 = margin fraction (default 0.06), #2 = image file
+\newcommand{\illustrationpage}[2][0.06]{%
+  \clearpage
+  \thispagestyle{empty}%
+
+  % margin lengths (decimal factors are OK with calc)
+  \setlength{\illumarW}{#1\paperwidth}%
+  \setlength{\illumarH}{#1\paperheight}%
+
+  % card dimensions
+  \setlength{\illucardW}{\paperwidth - 2\illumarW}%
+  \setlength{\illucardH}{\paperheight - 2\illumarH}%
+
+  \begin{tikzpicture}[remember picture,overlay]
+    % Background (fills page; backdrop only)
+    \node at (current page.center) {%
+      \includegraphics[width=\paperwidth,height=\paperheight]{#2}%
+    };
+
+  \end{tikzpicture}%
+  \clearpage
+}
+
+% Optional: rotate the whole thing for a landscape asset you want rotated
+\newcommand{\illustrationpagelandscape}[2][0.06]{%
+  \clearpage
+  \thispagestyle{empty}%
+
+  \setlength{\illumarW}{#1\paperwidth}%
+  \setlength{\illumarH}{#1\paperheight}%
+  \setlength{\illucardW}{\paperwidth - 2\illumarW}%
+  \setlength{\illucardH}{\paperheight - 2\illumarH}%
+
+  \begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.center) {%
+      \rotatebox{90}{\includegraphics[width=\paperheight,height=\paperwidth]{#2}}%
+    };
+
+  \end{tikzpicture}%
+  \clearpage
+}
+
 
 
 \mdfdefinestyle{drikstyle}{%
