@@ -81,6 +81,9 @@
 % When using thmmarks, amsmath must be an option as well. Otherwise \eqref doesn't work anymore.
 \usepackage[framed,amsmath,thmmarks]{ntheorem}
 
+\usepackage[x-4]{pdfx}    % PDF/X-4
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page Layout
 % http://en.wikibooks.org/wiki/LaTeX/Page_Layout
@@ -270,54 +273,39 @@ morestring=[b]"
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{calc} % <-- important (allows 0.06\paperwidth arithmetic)
+\usepackage[export]{adjustbox}
 
 \newlength{\illucardW}
 \newlength{\illucardH}
 \newlength{\illumarW}
 \newlength{\illumarH}
 
-% Background fills page; foreground sits on a clean "card" and is fitted (no crop, no distortion)
-% #1 = margin fraction (default 0.06), #2 = image file
-\newcommand{\illustrationpage}[2][0.06]{%
+\newcommand{\illustrationpage}[1]{%
   \clearpage
   \thispagestyle{empty}%
-
-  % margin lengths (decimal factors are OK with calc)
-  \setlength{\illumarW}{#1\paperwidth}%
-  \setlength{\illumarH}{#1\paperheight}%
-
-  % card dimensions
-  \setlength{\illucardW}{\paperwidth - 2\illumarW}%
-  \setlength{\illucardH}{\paperheight - 2\illumarH}%
-
   \begin{tikzpicture}[remember picture,overlay]
-    % Background (fills page; backdrop only)
-    \node at (current page.center) {%
-      \includegraphics[width=\paperwidth,height=\paperheight]{#2}%
+    \node[inner sep=0] at (current page.center) {%
+      \includegraphics[width=\paperwidth,keepaspectratio]{#1}%
     };
-
   \end{tikzpicture}%
   \clearpage
 }
 
-% Optional: rotate the whole thing for a landscape asset you want rotated
-\newcommand{\illustrationpagelandscape}[2][0.06]{%
+
+
+\newcommand{\illustrationpagelandscape}[1]{%
   \clearpage
   \thispagestyle{empty}%
-
-  \setlength{\illumarW}{#1\paperwidth}%
-  \setlength{\illumarH}{#1\paperheight}%
-  \setlength{\illucardW}{\paperwidth - 2\illumarW}%
-  \setlength{\illucardH}{\paperheight - 2\illumarH}%
-
   \begin{tikzpicture}[remember picture,overlay]
-    \node at (current page.center) {%
-      \rotatebox{90}{\includegraphics[width=\paperheight,height=\paperwidth]{#2}}%
+    \node[inner sep=0] at (current page.center) {%
+      \rotatebox{90}{\includegraphics[height=\paperwidth,keepaspectratio]{#1}}%
     };
-
   \end{tikzpicture}%
   \clearpage
 }
+
+
+
 
 
 
